@@ -99,7 +99,7 @@ const deleteUser = (userId) => {
                         <th class="py-2 px-4 border-b-2">#</th>
                         <th class="py-2 px-4 border-b-2">Name</th>
                         <th class="py-2 px-4 border-b-2">Role</th>
-                        <th class="py-2 px-4 border-b-2">Depertment</th>
+                        <th class="py-2 px-4 border-b-2">Department</th>
                         <th class="py-2 px-4 border-b-2">Action</th>
 
                     </tr>

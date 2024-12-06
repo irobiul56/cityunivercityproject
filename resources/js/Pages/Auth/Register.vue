@@ -12,7 +12,7 @@ const form = useForm({
     email: '',
     address: '',
     role_id: '',
-    depertment: '',
+    department_id: '',
     password: '',
     password_confirmation: '',
 });
@@ -53,8 +53,8 @@ const submit = () => {
                     </el-select>
                 </el-form-item>
             <el-form-item label="Depertment:">
-                <el-select v-model="form.depertment" placeholder="please select your depertment">
-                    <el-option label="CSE" value="depertment" />
+                <el-select v-model="form.department_id" placeholder="please select your depertment">
+                    <el-option label="CSE" value="1" />
                 </el-select>
             </el-form-item>
             <el-form-item label="Address:">
