@@ -165,6 +165,11 @@ const user = props.auth?.user || { roles: [], permissions: [] };
 // Helper functions with type safety
 const userHasRole = (role: string) => Array.isArray(user.roles) && user.roles.includes(role);
 const userHasPermission = (permission: string) => Array.isArray(user.permissions) && user.permissions.includes(permission);
+
+const hasPermission = (permissionName: string): boolean => {
+  return user.value?.role?.permissions?.some((permission: any) => permission.name === permissionName) ?? false;
+};
+
 </script>
 
 <style>

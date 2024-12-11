@@ -1,17 +1,21 @@
 <script setup>
-import { ref } from "vue";
+import { ref, computed  } from "vue";
 import { useSidebar } from "../Composables/useSidebar";
-import { Link, usePage} from "@inertiajs/vue3";
+import { Link, usePage } from "@inertiajs/vue3";
 
-const { props } = usePage()
-const authUser = props.auth.user
+const page = usePage();
+const auth = computed(() => page.props.auth.user);
 
-console.log(authUser) // Check if authUser contains the role data
+console.log(auth.value); // Check if 'auth.user' has the expected data
+console.log(auth.role?.name); // Check if 'role' is present
+console.log(auth.role?.permissions); // Check if 'permissions' is present
+
 
 const dropdownOpen = ref(false);
 const { isOpen } = useSidebar();
 
 </script>
+
 
 <template>
   <header class="flex items-center justify-between px-6 py-4 bg-white border-b-4 border-indigo-600">
@@ -62,7 +66,7 @@ const { isOpen } = useSidebar();
           leave-active-class="transition duration-150 ease-in transform" leave-from-class="scale-100 opacity-100"
           leave-to-class="scale-95 opacity-0">
           <div v-show="dropdownOpen" class="absolute right-0 z-20 w-48 py-2 mt-2 bg-white rounded-md shadow-xl">
-            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-600 hover:text-white">{{ authUser.name || 'No Role' }}</a>
+            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-600 hover:text-white">{{ auth.name || 'No Role' }}<el-tag size="small">{{ auth.role.name }}</el-tag></a>
             <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-600 hover:text-white">Products</a>
             
             <Link class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-600 hover:text-white" :href="route('logout')" method="post">Log Out</Link>

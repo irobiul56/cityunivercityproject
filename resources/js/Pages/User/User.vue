@@ -6,6 +6,7 @@ import { ref, computed } from 'vue'
 import { usePage, useForm } from '@inertiajs/vue3'
 import { ElMessage } from "element-plus";
 
+
 const { props } = usePage()
 const users = ref(props.user)
 
@@ -70,9 +71,9 @@ const deleteUser = (userId) => {
 
 <template>
     <FrontendLayout>
-        <div v-if="$page.props.flash.message" class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400 alert">
-        {{ $page.props.flash.message }}
-      </div>
+        <div v-if="$page.props.flash?.message" class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400 alert">
+            {{ $page.props.flash?.message }}
+        </div>
       
         <Head title="User page"></Head>
         <div class="container mx-auto">

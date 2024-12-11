@@ -2,14 +2,10 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-
-use App\Models\User\PermissionModel;
 use App\Models\User\RoleModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-
 
 class User extends Authenticatable
 {
@@ -22,14 +18,12 @@ class User extends Authenticatable
      */
     protected $guarded = [];
 
+    /**
+     * Relationship: A user belongs to a role.
+     */
     public function role()
     {
-        return $this->belongsTo(RoleModel::class, 'role_id');
-    }
-
-    public function permissions()
-    {
-        return $this->belongsToMany(PermissionModel::class);
+        return $this->belongsTo(RoleModel::class, 'role_id', 'id');
     }
 
     /**
@@ -43,9 +37,9 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get the attributes that should be cast.
+     * The attributes that should be cast.
      *
-     * @return array<string, string>
+     * @var array<string, string>
      */
     protected function casts(): array
     {
