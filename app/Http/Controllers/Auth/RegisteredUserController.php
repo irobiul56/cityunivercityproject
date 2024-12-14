@@ -23,10 +23,10 @@ class RegisteredUserController extends Controller
     public function create(): Response
     {
         $role = RoleModel::all();
-        $depertment = Depertment::all();
+        $department = Depertment::all();
         return Inertia::render('Auth/Register', [
             'role'          => $role,
-            'depertment'    => $depertment,
+            'department'    => $department,
         ]);
     }
 
@@ -39,6 +39,8 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
+            'role_id' => 'required',
+            'department_id' => 'required',
             'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
@@ -52,10 +54,7 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        event(new Registered($user));
-
-        Auth::login($user);
-
         return redirect(route('user.index', absolute: false));
+        
     }
 }

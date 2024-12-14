@@ -11,14 +11,14 @@
         <el-icon style="margin: 20px; font-size: 20px;"><Expand /></el-icon>
       </el-menu-item-group>
 
-      <Link :href="route('dashboard')" @click="setActive('1')">
+      <Link v-if="user.role.permissions.includes('Dashboard')" :href="route('dashboard')" @click="setActive('1')">
         <el-menu-item :index="'1'">
           <el-icon><icon-menu /></el-icon>
           <template #title>Dashboard</template>
         </el-menu-item>
       </Link>
 
-      <el-sub-menu index="2">
+      <el-sub-menu v-if="user.role.permissions.includes('Inventory')" index="2">
         <template #title>
           <el-icon><Shop /></el-icon>
           <span>Inventory</span>
@@ -48,56 +48,56 @@
         </el-menu-item-group>
       </el-sub-menu>
 
-      <Link :href="route('inventoryTracking.index')" @click="setActive('3')">
+      <Link v-if="user.role.permissions.includes('P&P Management')" :href="route('inventoryTracking.index')" @click="setActive('3')">
         <el-menu-item :index="'3'">
           <el-icon><Coin /></el-icon>
           <template #title>P&P Management</template>
         </el-menu-item>
       </Link>
 
-      <Link :href="route('inventoryTracking.index')" @click="setActive('4')">
+      <Link v-if="user.role.permissions.includes('Barcode')" :href="route('inventoryTracking.index')" @click="setActive('4')">
         <el-menu-item :index="'4'">
           <el-icon><ToiletPaper /></el-icon>
           <template #title>Barcode</template>
         </el-menu-item>
       </Link>
 
-      <Link :href="route('inventoryTracking.index')" @click="setActive('5')">
+      <Link v-if="user.role.permissions.includes('Stock')" :href="route('inventoryTracking.index')" @click="setActive('5')">
         <el-menu-item :index="'5'">
           <el-icon><RefreshLeft /></el-icon>
           <template #title>Stock</template>
         </el-menu-item>
       </Link>
 
-      <Link :href="route('inventoryTracking.index')" @click="setActive('6')">
+      <Link v-if="user.role.permissions.includes('Asset Management')" :href="route('inventoryTracking.index')" @click="setActive('6')">
         <el-menu-item :index="'6'">
           <el-icon><Goods /></el-icon>
           <template #title>Asset Management</template>
         </el-menu-item>
       </Link>
 
-      <Link :href="route('inventoryTracking.index')" @click="setActive('7')">
+      <Link v-if="user.role.permissions.includes('M&R Management')" :href="route('inventoryTracking.index')" @click="setActive('7')">
         <el-menu-item :index="'7'">
           <el-icon><Setting /></el-icon>
           <template #title>M&R Management</template>
         </el-menu-item>
       </Link>
 
-      <Link :href="route('inventoryTracking.index')" @click="setActive('8')">
+      <Link v-if="user.role.permissions.includes('Reporting')" :href="route('inventoryTracking.index')" @click="setActive('8')">
         <el-menu-item :index="'8'">
           <el-icon><Document /></el-icon>
           <template #title>Reporting</template>
         </el-menu-item>
       </Link>
 
-      <Link :href="route('inventoryTracking.index')" @click="setActive('9')">
+      <Link v-if="user.role.permissions.includes('Departments')" :href="route('department.index')" @click="setActive('9')">
         <el-menu-item :index="'9'">
           <el-icon><icon-menu /></el-icon>
           <template #title>Departments</template>
         </el-menu-item>
       </Link>
 
-      <el-sub-menu index="10">
+      <el-sub-menu v-if="user.role.permissions.includes('User')" index="10">
         <template #title>
           <el-icon><Shop /></el-icon>
           <span>User</span>
@@ -128,7 +128,7 @@
   </div>
 </template>
 
-<script lang="ts" setup>
+<script setup>
 import { ref, computed } from 'vue';
 import { Link } from '@inertiajs/vue3';
 import { usePage } from '@inertiajs/vue3';
@@ -139,13 +139,13 @@ import {
 } from '@element-plus/icons-vue';
 
 const isCollapse = ref(true);
-const activeMenu = ref<string>("1"); // Track the active menu item
+const activeMenu = ref("1"); // Track the active menu item
 
-const handleOpen = (key: string, keyPath: string[]) => {
+const handleOpen = (key, keyPath) => {
   console.log(key, keyPath);
 };
 
-const handleClose = (key: string, keyPath: string[]) => {
+const handleClose = (key, keyPath) => {
   console.log(key, keyPath);
 };
 
@@ -153,22 +153,13 @@ const toggleCollapse = () => {
   isCollapse.value = !isCollapse.value;
 };
 
-const setActive = (index: string) => {
+const setActive = (index) => {
   activeMenu.value = index;
   isCollapse.value = false;
 };
 
-// Access the current page's props and handle possible undefined values
-const { props } = usePage();
-const user = props.auth?.user || { roles: [], permissions: [] };
-
-// Helper functions with type safety
-const userHasRole = (role: string) => Array.isArray(user.roles) && user.roles.includes(role);
-const userHasPermission = (permission: string) => Array.isArray(user.permissions) && user.permissions.includes(permission);
-
-const hasPermission = (permissionName: string): boolean => {
-  return user.value?.role?.permissions?.some((permission: any) => permission.name === permissionName) ?? false;
-};
+const page = usePage();
+const user = computed(() => page.props.auth.user);
 
 </script>
 

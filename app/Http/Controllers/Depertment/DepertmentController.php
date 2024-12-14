@@ -14,9 +14,9 @@ class DepertmentController extends Controller
      */
     public function index()
     {
-        $depertment = Depertment::all();
-        return Inertia::render('User/Depertment', [
-            'depertment'    => $depertment
+        $department = Depertment::all();
+        return Inertia::render('User/Department', [
+            'department'    => $department
         ]);
     }
 
@@ -37,11 +37,11 @@ class DepertmentController extends Controller
             'name' => 'required'
         ]);
 
-        $depertment = Depertment::create([
+        $department = Depertment::create([
             'name'  => $data['name']
         ]);
 
-        return redirect()-> back() -> with('success', $depertment .' Depertment created successfully.');
+        return redirect()-> back() -> with('success', $department .' Department created successfully.');
     }
 
     /**
@@ -63,13 +63,13 @@ class DepertmentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Depertment $depertment)
+    public function update(Request $request, Depertment $department)
     {
         $request->validate([
             'name' => 'required',
         ]);
 
-        $depertment->update([
+        $department->update([
             'name' => $request->name,
         ]);
     }
@@ -77,8 +77,8 @@ class DepertmentController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Depertment $depertment)
+    public function destroy(Depertment $department)
     {
-        $depertment -> delete();
+        $department -> delete();
     }
 }

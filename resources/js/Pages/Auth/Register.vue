@@ -6,6 +6,7 @@ import { ref } from 'vue';
 
 const { props } = usePage();
 const roles = ref(props.role);
+const departments = ref(props.department);
 
 const form = useForm({
     name: '',
@@ -36,7 +37,7 @@ const submit = () => {
         <Head title="Register" />
         <el-form :model="form" @submit.prevent="submit" label-width="auto" style="max-width: 600px" class="max-w-lg mx-auto p-6 bg-white shadow-md rounded-md">
             <el-form-item :error="form.errors.fname" label="Name:">
-                <el-input v-model="form.name" />
+                <el-input v-model="form.name" aria-required="true"/>
             </el-form-item>
             <el-form-item :error="form.errors.email" label="Email:">
                 <el-input v-model="form.email" />
@@ -54,7 +55,7 @@ const submit = () => {
                 </el-form-item>
             <el-form-item label="Depertment:">
                 <el-select v-model="form.department_id" placeholder="please select your depertment">
-                    <el-option label="CSE" value="1" />
+                    <el-option v-for="(department, index) in departments" :key="index" :label="department.name" :value="department.id"/>
                 </el-select>
             </el-form-item>
             <el-form-item label="Address:">

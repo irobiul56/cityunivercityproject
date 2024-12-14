@@ -49,7 +49,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('user', UserController::class);
 
     //Depertment
-    Route::resource('depertment', DepertmentController::class);
+    Route::resource('department', DepertmentController::class);
 });
 
 require __DIR__.'/auth.php';

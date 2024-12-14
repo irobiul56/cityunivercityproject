@@ -7,15 +7,15 @@ import { usePage, useForm } from '@inertiajs/vue3';
 import { ElMessage } from "element-plus";
 
 const { props } = usePage()
-const depertments = ref(props.depertment)
+const departments = ref(props.department)
 
 const itemsPerPage = ref(10)
 const currentPage = ref(1)
 const searchQuery = ref('')
 
-const filtereddepertment = computed(() => {
-  const filtered = depertments.value.filter(depertment => 
-  depertment.name.toLowerCase().includes(searchQuery.value.toLowerCase()) 
+const filtereddepartment = computed(() => {
+  const filtered = departments.value.filter(department => 
+  department.name.toLowerCase().includes(searchQuery.value.toLowerCase()) 
   )
   const start = (currentPage.value - 1) * itemsPerPage.value
   const end = start + itemsPerPage.value
@@ -24,8 +24,8 @@ const filtereddepertment = computed(() => {
 
 const totalPages = computed(() => {
   return Math.ceil(
-    depertments.value.filter(depertment => 
-    depertment.name.toLowerCase().includes(searchQuery.value.toLowerCase()) 
+    departments.value.filter(department => 
+    department.name.toLowerCase().includes(searchQuery.value.toLowerCase()) 
     ).length / itemsPerPage.value
   )
 })
@@ -53,41 +53,41 @@ defineProps({
 const isModalVisible = ref(false);
 
 // Form to add a new customer
-const depertmentForm = useForm({
+const departmentForm = useForm({
     name: '',
 });
 
-const Adddepertment = () => {
+const Adddepartment = () => {
     isModalVisible.value = true;
 };
 
 
 // Method to open modal with permission data for editing
-const editdepertment = (depertment) => {
-    depertmentForm.id = depertment.id; // Set the ID to track the permission being edited
-    depertmentForm.name = depertment.name; // Populate form with existing data
+const editdepartment = (department) => {
+    departmentForm.id = department.id; // Set the ID to track the permission being edited
+    departmentForm.name = department.name; // Populate form with existing data
   isModalVisible.value = true;
 };
 
-const submitdepertment = () => {
+const submitdepartment = () => {
     // Determine if we are updating (PUT) or creating (POST)
-    const isUpdate = Boolean(depertmentForm.id);
-    const routeName = isUpdate ? 'depertment.update' : 'depertment.store';
-    const routeParams = isUpdate ? [depertmentForm.id] : [];
+    const isUpdate = Boolean(departmentForm.id);
+    const routeName = isUpdate ? 'department.update' : 'department.store';
+    const routeParams = isUpdate ? [departmentForm.id] : [];
     const method = isUpdate ? 'put' : 'post'; // Use PUT for update, POST for create
 
     // Submit the form with appropriate HTTP method
-    depertmentForm[method](route(routeName, ...routeParams), {
+    departmentForm[method](route(routeName, ...routeParams), {
         onSuccess: (page) => {
             isModalVisible.value = false; // Close modal on success
-            depertments.value = page.props.depertment; // Refresh permissions list
-            depertmentForm.reset(); // Reset form fields
-            depertmentForm.id = null; // Reset ID for next add
-            const message = isUpdate ? "Depertment updated successfully!" : "Depertment added successfully!";
+            departments.value = page.props.department; // Refresh permissions list
+            departmentForm.reset(); // Reset form fields
+            departmentForm.id = null; // Reset ID for next add
+            const message = isUpdate ? "Department updated successfully!" : "Department added successfully!";
             ElMessage.success(message);
         },
         onError: () => {
-            ElMessage.error("Failed to submit the depertment. Please try again.");
+            ElMessage.error("Failed to submit the department. Please try again.");
         }
     });
 };
@@ -99,15 +99,15 @@ const closeModal = () => {
     isModalVisible.value = false;
 };
 
-const deletedepertment = (depertmentId) => {
+const deletedepartment = (departmentId) => {
     if (confirm("Are you sure you want to delete this data?")) {
-        depertmentForm.delete(route('depertment.destroy', depertmentId), {
+        departmentForm.delete(route('department.destroy', departmentId), {
             onSuccess: (page) => {
-                depertments.value = page.props.depertment; // Update the depertments list after deletion
-                ElMessage.success("Depertment deleted successfully!");
+                departments.value = page.props.department; // Update the departments list after deletion
+                ElMessage.success("Department deleted successfully!");
             },
             onError: () => {
-                ElMessage.error("Failed to delete the depertment. Please try again.");
+                ElMessage.error("Failed to delete the department. Please try again.");
             },
         });
     }
@@ -118,11 +118,11 @@ const deletedepertment = (depertmentId) => {
 
 <template>
     <FrontendLayout>
-        <div v-if="$page.props.flash.message" class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400 alert">
-        {{ $page.props.flash.message }}
+        <div v-if="$page.props.flash?.message" class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400 alert">
+        {{ $page.props.flash?.message }}
       </div>
       
-        <Head title="Depertment page"></Head>
+        <Head title="Department page"></Head>
         <div class="container mx-auto">
             <div class="relative mx-4 lg:mx-0 mb-2">
                 <span class="absolute inset-y-0 left-0 flex items-center pl-3"><svg class="w-5 h-5 text-gray-500"
@@ -135,7 +135,7 @@ const deletedepertment = (depertmentId) => {
                 <input v-model="searchQuery"
                     class="w-32 pl-10 pr-4 text-indigo-600 border-gray-200 rounded-md sm:w-64 focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500"
                     type="text" placeholder="Search">
-                    <el-button class=" ml-3" @click="Adddepertment" type="success">Add</el-button>
+                    <el-button class=" ml-3" @click="Adddepartment" type="success">Add</el-button>
 
             </div>
 
@@ -143,19 +143,19 @@ const deletedepertment = (depertmentId) => {
                 <thead>
                     <tr class="text-left">
                         <th class="py-2 px-4 border-b-2">#</th>
-                        <th class="py-2 px-4 border-b-2">Depertment Name</th>
+                        <th class="py-2 px-4 border-b-2">Department Name</th>
                         <th class="py-2 px-4 border-b-2">Action</th>
 
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="(depertment, index) in filtereddepertment" :key="index" class="hover:bg-gray-100">
+                    <tr v-for="(department, index) in filtereddepartment" :key="index" class="hover:bg-gray-100">
                         <td class="py-2 px-4 border-b">{{ index + 1 }}</td>
-                        <td class="py-2 px-4 border-b">{{ depertment.name }}</td>
+                        <td class="py-2 px-4 border-b">{{ department.name }}</td>
                         <td class="py-2 px-4 border-b flex">
 
                            <!-- Edit button to open modal for editing -->
-                            <button @click="editdepertment(depertment)">
+                            <button @click="editdepartment(department)">
                                 <svg class="w-6 h-6 text-blue-400 dark:text-white ml-5" aria-hidden="true"
                                 xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
                                 viewBox="0 0 24 24">
@@ -165,7 +165,7 @@ const deletedepertment = (depertmentId) => {
                                 </svg>
                             </button>
 
-                            <Link @click="deletedepertment(depertment.id)">
+                            <Link @click="deletedepartment(department.id)">
                             <svg class="w-6 h-6 text-red-400 dark:text-white ml-5" aria-hidden="true"
                                 xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
                                 viewBox="0 0 24 24">
@@ -194,17 +194,17 @@ const deletedepertment = (depertmentId) => {
         </div>
 
         <el-dialog
-    title="Depertment Details"
+    title="Department Details"
     :model-value="isModalVisible"
     @close="closeModal"
     width="40%"
     class="custom-modal"
 >
     <div class="modal-content">
-        <!-- Input field for depertment Name -->
+        <!-- Input field for department Name -->
         <el-input
-            v-model="depertmentForm.name"
-            placeholder="Enter Depertment Name"
+            v-model="departmentForm.name"
+            placeholder="Enter Department Name"
             style="max-width: 350px"
         >
             <template #prepend> Name</template>
@@ -214,12 +214,12 @@ const deletedepertment = (depertmentId) => {
     <!-- Modal Footer with Submit and Close Buttons -->
     <template #footer>
         <el-button
-            @click="submitdepertment"
-            :disabled="depertmentForm.processing"
+            @click="submitdepartment"
+            :disabled="departmentForm.processing"
             type="primary"
             native-type="submit"
         >
-            <span v-if="depertmentForm.processing">Submitting...</span>
+            <span v-if="departmentForm.processing">Submitting...</span>
             <span v-else>Submit</span>
         </el-button>
         <el-button @click="closeModal" type="danger">Close</el-button>

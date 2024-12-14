@@ -33,18 +33,10 @@ class HandleInertiaRequests extends Middleware
             // Synchronously...
             'appName' => config('app.name'),
 
-            // Lazily...
-            'auth.user' => fn () => $request->user()
-                ? $request->user()->only('id', 'name', 'email')
-                : null,
-
-                'auth.user.role' => fn () => $request->user()
-                ? $request->user()->only('id', 'name')
-                : null,
-
                 'auth.user.role.permissions' => fn () => $request->user() && $request->user()->role
                 ? $request->user()->role->permissions->pluck('name') // Assuming permissions have a `name` attribute
                 : null,
+                
         ]);
     }
 }
