@@ -25,22 +25,24 @@
         </template>
 
         <el-menu-item-group>
-          <Link :href="route('inventoryTracking.index')" @click="setActive('2-1')">
+          <Link v-if="user.role.permissions.includes('Item List')" :href="route('inventoryTracking.index')" @click="setActive('2-1')">
             <el-menu-item :index="'2-1'">
               <el-icon><Shop /></el-icon> Item List
             </el-menu-item>
           </Link>
-          <Link :href="route('category.index')" @click="setActive('2-2')">
+          <Link v-if="user.role.permissions.includes('Category List')" :href="route('category.index')" @click="setActive('2-2')">
             <el-menu-item :index="'2-2'">
               <el-icon><PriceTag /></el-icon> Category List
             </el-menu-item>
           </Link>
-          <Link :href="route('inventoryTracking.create')" @click="setActive('2-3')">
+
+          <Link v-if="user.role.permissions.includes('Room')" :href="route('room.index')" @click="setActive('2-3')">
             <el-menu-item :index="'2-3'">
-              <el-icon><HomeFilled /></el-icon> Storage Room
+              <el-icon><HomeFilled /></el-icon> Room
             </el-menu-item>
           </Link>
-          <Link :href="route('inventoryTracking.create')" @click="setActive('2-4')">
+
+          <Link v-if="user.role.permissions.includes('Vendor')"  :href="route('inventoryTracking.create')" @click="setActive('2-4')">
             <el-menu-item :index="'2-4'">
               <el-icon><Plus /></el-icon> Vendor
             </el-menu-item>

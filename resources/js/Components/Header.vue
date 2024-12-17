@@ -27,18 +27,8 @@ const { isOpen } = useSidebar();
         </svg>
       </button>
 
-      <div class="relative mx-4 lg:mx-0">
-        <span class="absolute inset-y-0 left-0 flex items-center pl-3">
-          <svg class="w-5 h-5 text-gray-500" viewBox="0 0 24 24" fill="none">
-            <path
-              d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-          </svg>
-        </span>
-
-        <input
-          class="w-32 pl-10 pr-4 text-indigo-600 border-gray-200 rounded-md sm:w-64 focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500"
-          type="text" placeholder="Search" />
+      <div class="mr-3">
+        <img style="width: 60px; height: 42px;" src="https://seeklogo.com/images/C/city-university-logo-6896078AB2-seeklogo.com.png" alt="">
       </div>
     </div>
 
@@ -66,7 +56,7 @@ const { isOpen } = useSidebar();
           leave-active-class="transition duration-150 ease-in transform" leave-from-class="scale-100 opacity-100"
           leave-to-class="scale-95 opacity-0">
           <div v-show="dropdownOpen" class="absolute right-0 z-20 w-48 py-2 mt-2 bg-white rounded-md shadow-xl">
-            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-600 hover:text-white">{{ user.name || 'No Role' }}<el-tag size="small">{{ user.role.name }}</el-tag></a>
+            <a :href="route('profile.edit')" class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-600 hover:text-white">{{ user.name || 'No Role' }}<el-tag size="small">{{ user.role.name }}</el-tag></a>
             <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-600 hover:text-white">Products</a>
             
             <Link class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-600 hover:text-white" :href="route('logout')" method="post">Log Out</Link>

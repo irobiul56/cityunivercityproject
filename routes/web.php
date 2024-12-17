@@ -8,6 +8,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Customer\CutomerController;
 use App\Http\Controllers\Depertment\DepertmentController;
 use App\Http\Controllers\Inventory\InventoryTrackingController;
+use App\Http\Controllers\Inventory\RoomController;
 use App\Http\Controllers\Inventory\StorageController;
 use App\Http\Controllers\User\PermissionController;
 use App\Http\Controllers\User\RoleController;
@@ -50,6 +51,9 @@ Route::middleware('auth')->group(function () {
 
     //Depertment
     Route::resource('department', DepertmentController::class);
+
+    //Rome
+    Route::resource('room', RoomController::class);
 });
 
 require __DIR__.'/auth.php';

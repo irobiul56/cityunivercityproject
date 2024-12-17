@@ -8,7 +8,7 @@ class FronendController extends Controller
 {
     public function index() {
 
-        return Inertia::render('Frontend/Home');
+        return Inertia::render('Dashboard');
     }
 
     public function about(){
