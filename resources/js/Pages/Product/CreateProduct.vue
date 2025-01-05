@@ -55,21 +55,21 @@ defineProps({
     <Head title="Upload Product"/>
     <FrontendLayout>
         <el-card class="max-w-2xl mx-auto p-6">
-          
+          <template #header>Inventory Item Adding Form</template>
   <div class="p-2 mb-2 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" v-if="errors.name">{{ errors.name }}</div>   
     <el-form @submit.prevent="saveProduct()" label-position="top" label-width="100px">
-      <el-form-item label="Product Name" :required="true">
-        <el-input v-model="form.name" placeholder="Enter product name"></el-input>
+      <el-form-item label="Item Name" :required="true">
+        <el-input v-model="form.name" placeholder="Enter Item name"></el-input>
       </el-form-item>
 
       <div class="p-2 mb-2 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" v-if="errors.description">{{ errors.description }}</div>
       <el-form-item label="Description" :required="true">
-        <el-input type="textarea" v-model="form.description" placeholder="Enter product description"></el-input>
+        <el-input type="textarea" v-model="form.description" placeholder="Enter Item description"></el-input>
       </el-form-item>
       
       <div class="p-2 mb-2 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" v-if="errors.price">{{ errors.price }}</div>
       <el-form-item label="Price" :required="true">
-        <el-input v-model="form.price" type="number" placeholder="Enter product price"></el-input>
+        <el-input v-model="form.price" type="number" placeholder="Enter Item price"></el-input>
       </el-form-item>
       
       <el-form-item label="Category" :required="true">
@@ -105,8 +105,8 @@ defineProps({
 
       <el-form-item>
         <el-button :disabled="form.processing" type="success" native-type="submit">
-          <span v-if="form.processing">Product Submiting....</span>
-          <span v-else>Product Submit</span>
+          <span v-if="form.processing">Item Adding....</span>
+          <span v-else>Add Item</span>
         </el-button>
         
         <span v-if="form.progress" :value="form.progress.percentage" max="100">

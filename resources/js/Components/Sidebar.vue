@@ -42,8 +42,14 @@
             </el-menu-item>
           </Link>
 
-          <Link v-if="user.role.permissions.includes('Vendor')"  :href="route('inventoryTracking.create')" @click="setActive('2-4')">
+          <Link v-if="user.role.permissions.includes('Store')" :href="route('storages.index')" @click="setActive('2-4')">
             <el-menu-item :index="'2-4'">
+              <el-icon><HomeFilled /></el-icon> Store Room
+            </el-menu-item>
+          </Link>
+
+          <Link v-if="user.role.permissions.includes('Vendor')"  :href="route('vendor.index')" @click="setActive('2-5')">
+            <el-menu-item :index="'2-5'">
               <el-icon><Plus /></el-icon> Vendor
             </el-menu-item>
           </Link>

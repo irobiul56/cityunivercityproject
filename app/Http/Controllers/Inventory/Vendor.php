@@ -3,20 +3,20 @@
 namespace App\Http\Controllers\Inventory;
 
 use App\Http\Controllers\Controller;
-use App\Models\Storage;
+use App\Models\Vendor as ModelsVendor;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class StorageController extends Controller
+class Vendor extends Controller
 {
     /**
      * Display a listing of the resource.
      **/
     public function index()
     {
-        $storage = Storage::all(); 
-        return Inertia::render('Inventory/Storage', [
-            'storage' => $storage
+        $vendor = ModelsVendor::all(); 
+        return Inertia::render('Inventory/Vendor', [
+            'vendor' => $vendor
         ]);
     }
 
@@ -29,24 +29,26 @@ class StorageController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created resource in Vendor.
      */
     public function store(Request $request)
     {
         $data = $request->validate([
             'name' => 'required',
+            'company_name' => 'required',
             'address' => 'required',
-            'size' => 'required',
+            'phone' => 'required',
             
         ]);
 
-        $storage = Storage::create([
+        $Vendor = ModelsVendor::create([
             'name'  => $data['name'],
+            'company_name'  => $data['company_name'],
             'address'  => $data['address'],
-            'size'  => $data['size'],
+            'phone'  => $data['phone'],
         ]);
 
-        return redirect()-> back() -> with('success', $storage .' Storage created successfully.');
+        return redirect()-> back() -> with('success', $Vendor .' Vendor created successfully.');
     }
 
     /**
@@ -66,28 +68,30 @@ class StorageController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified resource in Vendor.
      */
-    public function update(Request $request, Storage $storage)
+    public function update(Request $request, ModelsVendor $Vendor)
     {
         $request->validate([
             'name' => 'required',
+            'company_name' => 'required',
             'address' => 'required',
-            'size' => 'required',
+            'phone' => 'required',
         ]);
 
-        $storage->update([
+        $Vendor->update([
             'name' => $request->name,
+            'company_name' => $request->company_name,
             'address' => $request->address,
-            'size' => $request->size,
+            'phone' => $request->phone,
         ]);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified resource from Vendor.
      */
-    public function destroy(Storage $storage)
+    public function destroy(ModelsVendor $Vendor)
     {
-        $storage -> delete();
+        $Vendor -> delete();
     }
 }

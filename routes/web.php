@@ -10,6 +10,7 @@ use App\Http\Controllers\Depertment\DepertmentController;
 use App\Http\Controllers\Inventory\InventoryTrackingController;
 use App\Http\Controllers\Inventory\RoomController;
 use App\Http\Controllers\Inventory\StorageController;
+use App\Http\Controllers\Inventory\Vendor;
 use App\Http\Controllers\User\PermissionController;
 use App\Http\Controllers\User\RoleController;
 use App\Http\Controllers\User\UserController;
@@ -31,9 +32,6 @@ Route::middleware('auth')->group(function () {
     Route::resource('inventoryTracking', InventoryTrackingController::class);
     Route::resource('customer', CutomerController::class);
 
-    //Storage
-    Route::resource('storage', StorageController::class);
-
     //Product Category
     Route::resource('category', CategoryController::class);
 
@@ -54,6 +52,12 @@ Route::middleware('auth')->group(function () {
 
     //Rome
     Route::resource('room', RoomController::class);
+
+    //Rome
+    Route::resource('storages', StorageController::class);
+
+    //Rome
+    Route::resource('vendor', Vendor::class);
 });
 
 require __DIR__.'/auth.php';
