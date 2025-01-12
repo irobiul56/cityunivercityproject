@@ -7,6 +7,7 @@ import { ElMessage } from "element-plus";
 
 const { props } = usePage()
 const categories = ref(props.category)
+const stores = ref(props.store)
 
 const form = useForm({
     name: '',
@@ -15,6 +16,7 @@ const form = useForm({
     stock: '',
     image: null,
     category: '',
+    store_id: '',
 });
 
 const imagePreview = ref(null);
@@ -55,7 +57,10 @@ defineProps({
     <Head title="Upload Product"/>
     <FrontendLayout>
         <el-card class="max-w-2xl mx-auto p-6">
-          <template #header>Inventory Item Adding Form</template>
+          <div style="padding-bottom:20px; ">
+            <h1 style="border-left: 2px solid rgb(79 70 229); padding-left:5px">Inventory Item Adding Form</h1>
+          </div>
+          
   <div class="p-2 mb-2 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" v-if="errors.name">{{ errors.name }}</div>   
     <el-form @submit.prevent="saveProduct()" label-position="top" label-width="100px">
       <el-form-item label="Item Name" :required="true">
@@ -79,6 +84,17 @@ defineProps({
           :key="index"
           :label="category.name"
           :value="category.id"
+        />
+      </el-select>
+      </el-form-item>
+
+      <el-form-item label="Storage Location" :required="true">
+        <el-select v-model="form.store_id" placeholder="Select">
+        <el-option
+          v-for="(store, index) in stores"
+          :key="index"
+          :label="store.name"
+          :value="store.id"
         />
       </el-select>
       </el-form-item>

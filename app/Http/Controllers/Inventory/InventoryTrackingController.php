@@ -19,7 +19,7 @@ class InventoryTrackingController extends Controller
      */
     public function index()
     {
-        $products = Product::all();
+        $products = Product::with('storage')->get();
         
         $barcodeGenerator = new DNS1D();
 

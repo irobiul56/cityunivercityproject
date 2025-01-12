@@ -160,7 +160,7 @@ const handleInvoicePrint = () => {
     invoiceForm.customer_id = customer ? customer.id : null;
 
     // Submit the form using Inertia
-    invoiceForm.post(route('pos.store'), {
+    invoiceForm.post(route('requisition.store'), {
         onSuccess: () => {
             ElMessage.success("Invoice generated and printed successfully!");
             // Handle success (e.g., redirect to a success page or reset the form)

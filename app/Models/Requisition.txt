@@ -6,7 +6,7 @@ use App\Models\Product\Product;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Storage extends Model
+class Requisition extends Model
 {
     use HasFactory;
 
@@ -14,7 +14,9 @@ class Storage extends Model
 
     public function products()
     {
-        return $this->hasMany(Product::class, 'store_id');
+        return $this->belongsToMany(Product::class, 'product_requisition')
+                    ->withPivot('quantity')
+                    ->withTimestamps();
     }
-
+    
 }

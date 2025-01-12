@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Product;
 use App\Http\Controllers\Controller;
 use App\Models\Product\Product;
 use App\Models\ProductCategoryModel;
+use App\Models\Storage as ModelsStorage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
@@ -38,8 +39,10 @@ class ProductController extends Controller
     public function create()
     {
         $category = ProductCategoryModel::all();
+        $store = ModelsStorage::all();
         return Inertia::render('Product/CreateProduct', [
-            'category'=> $category
+            'category'=> $category,
+            'store'=> $store,
         ]);
     }
 
@@ -53,6 +56,7 @@ class ProductController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string',
+            'store_id' => 'required|string',
             'price' => 'required|numeric|min:0',
             'stock' => 'required|integer|min:0',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -79,9 +83,10 @@ class ProductController extends Controller
             'user_id' => Auth::user()->id,
             'sku' => $sku,
             'category_id' => $request -> category,
+            'store_id' => $request -> store_id,
         ]);
 
-        return redirect()->route('product.index')->with('success', 'Product created successfully.');
+        return redirect()->route('inventoryTracking.index')->with('success', 'Product created successfully.');
 
     }
 
@@ -141,7 +146,7 @@ class ProductController extends Controller
         'user_id' => Auth::user()->id,
     ]);
 
-    return redirect()->route('product.index')->with('success', 'Product Updated successfully.');
+    return redirect()->route('inventoryTracking.index')->with('success', 'Product Updated successfully.');
 }
 
     
@@ -153,6 +158,6 @@ class ProductController extends Controller
     {
         $product -> delete();
 
-        return redirect() -> to(route('product.index')) -> with('message', 'Product Deleted successfull');
+        return redirect() -> back() -> with('message', 'Product Deleted successfull');
     }
 }

@@ -49,11 +49,25 @@ defineProps({
 
 const form = useForm({});
 
+// const deleteProduct = (productId) => {
+//   if (confirm("Are you sure you want to delete this data?")) {
+//     form.delete(route('product.destroy', productId));
+//   }
+// }
+
 const deleteProduct = (productId) => {
-  if (confirm("Are you sure you want to delete this data?")) {
-    form.delete(route('product.destroy', productId));
-  }
-}
+    if (confirm("Are you sure you want to delete this data?")) {
+        form.delete(route('product.destroy', productId), {
+            onSuccess: (page) => {
+                products.value = page.props.product; // Update the rooms list after deletion
+                ElMessage.success("Product deleted successfully!");
+            },
+            onError: () => {
+                ElMessage.error("Failed to delete the Product. Please try again.");
+            },
+        });
+    }
+};
 
 
 // Initialize the selected product data for the modal
@@ -63,7 +77,7 @@ const selectedProduct = ref({
   price: '',
   stock: '',
   image: '',
-  category_id: ''
+  storage: ''
 });
 
 // Modal visibility
@@ -114,9 +128,9 @@ const closeModal = () => {
             <th class="py-2 px-4 border-b-2">#</th>
             <th class="py-2 px-4 border-b-2">Title</th>
             <th class="py-2 px-4 border-b-2">Description</th>
-            <th class="py-2 px-4 border-b-2">Qnt</th>
             <th class="py-2 px-4 border-b-2">Storage Location</th>
             <th class="py-2 px-4 border-b-2">Purchase Date</th>
+            <th class="py-2 px-4 border-b-2">Qnt</th>
             <th class="py-2 px-4 border-b-2">Status</th>
             <th class="py-2 px-4 border-b-2">Action</th>
 
@@ -130,14 +144,18 @@ const closeModal = () => {
                 :src="`/images/${product.image}`" alt="Product image" /></td> -->
             <td class="py-2 px-4 border-b">{{ product.name }}</td>
             <td class="py-2 px-4 border-b">{{ product.description }}</td>
-            <td class="py-2 px-4 border-b">{{ product.stock }}</td>
-            <td class="py-2 px-4 border-b"></td>
+            <td class="py-2 px-4 border-b"> {{ product.storage ? product.storage.name : 'N/A' }}</td>
             <!-- <td class="py-2 px-4 border-b" v-html="product.barcode_html"></td> -->
             <td class="py-2 px-4 border-b">{{ new Date(product.created_at).toLocaleDateString('en-GB') }}</td>
-            <td class="py-2 px-4 border-b">Available</td>
+            <td class="py-2 px-4 border-b">{{ product.stock }}</td>
+            
+            <td class="py-2 px-4 border-b"> 
+              <div class="flex gap-2">
+                <el-tag v-if="product.stock <= 0" type="danger">Unavilable</el-tag>
+                <el-tag v-if="product.stock > 0" type="success">Available</el-tag>
+              </div>
+            </td>
             <td class="py-6 px-4 border-b flex">
-
-
               <el-button @click="showProduct(product)">
                 <svg class="w-6 h-6 text-green-600 dark:text-white" xmlns="http://www.w3.org/2000/svg" width="24"
                   height="24" fill="none" viewBox="0 0 24 24">
@@ -192,10 +210,11 @@ const closeModal = () => {
           <h2>{{ selectedProduct.name }}</h2>
           <p class="description">{{ selectedProduct.description }}</p>
           <div class="price-stock">
-            <span class="price"><strong>Price:</strong> ${{ selectedProduct.price }}</span>
+            <span class="price"><strong>Price:</strong> <span style="font-size: 16px; font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">৳</span>{{selectedProduct.price }}</span>
             <span class="stock"><strong>Stock:</strong> {{ selectedProduct.stock }}</span>
           </div>
-          <p class="category"><strong>Category:</strong> {{ selectedProduct.category_id }}</p>
+          <p class="description"><strong>Storage Location:</strong> {{ selectedProduct.storage.name }}</p>
+          <p class="description"> {{ selectedProduct.storage.address }}</p>
         </div>
       </div>
 

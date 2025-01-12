@@ -7,7 +7,9 @@ use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Customer\CutomerController;
 use App\Http\Controllers\Depertment\DepertmentController;
+use App\Http\Controllers\HandlerController;
 use App\Http\Controllers\Inventory\InventoryTrackingController;
+use App\Http\Controllers\Inventory\RequisitionController;
 use App\Http\Controllers\Inventory\RoomController;
 use App\Http\Controllers\Inventory\StorageController;
 use App\Http\Controllers\Inventory\Vendor;
@@ -53,11 +55,15 @@ Route::middleware('auth')->group(function () {
     //Rome
     Route::resource('room', RoomController::class);
 
-    //Rome
+    //storages
     Route::resource('storages', StorageController::class);
 
-    //Rome
+    //vendor
     Route::resource('vendor', Vendor::class);
+
+    //requisition
+    Route::resource('requisition', RequisitionController::class);
+    Route::get('requisitionlist', [FronendController::class, 'requisition'])->name('requisition.list');
 });
 
 require __DIR__.'/auth.php';

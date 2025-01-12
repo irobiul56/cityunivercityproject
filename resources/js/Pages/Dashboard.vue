@@ -1,6 +1,6 @@
 <script setup>
 import FrontendLayout from "@/Layouts/FrontendLayout.vue";
-import { Head, usePage } from "@inertiajs/vue3";
+import { Head, usePage, Link } from "@inertiajs/vue3";
 import { ElMessage } from "element-plus";
 import {List, ShoppingTrolley, RefreshLeft, Coin , OfficeBuilding, PieChart } from "@element-plus/icons-vue";
 import { ref, computed } from 'vue';
@@ -14,16 +14,18 @@ const user = computed(() => page.props.auth.user);
     <FrontendLayout>
         <Head title="Dashboard"></Head>
         <div class="card-container">
-
+            
             <el-card v-if="user.role.permissions.includes('Inventory')" class="card" shadow="hover">
                 <div class="icon"> <el-icon style="font-size: 35px; color: green;"><List /></el-icon></div>
                 <div class="title"><p>Inventory</p></div>
             </el-card>
-
-            <el-card v-if="user.role.permissions.includes('Store Requisition')" class="card" shadow="hover">
+            
+           <Link v-if="user.role.permissions.includes('Store Requisition')" :href="route('requisition.list')">
+            <el-card class="card" shadow="hover">
                 <div class="icon"> <el-icon style="font-size: 35px; color: green;"><ShoppingTrolley /></el-icon></div>
                 <div class="title"><p>Store Requisition</p></div>
             </el-card>
+          </Link>
 
             <el-card v-if="user.role.permissions.includes('Stock')" class="card" shadow="hover">
                 <div class="icon"> <el-icon style="font-size: 35px; color: green;"><RefreshLeft /></el-icon></div>
@@ -39,6 +41,7 @@ const user = computed(() => page.props.auth.user);
                 <div class="icon"> <el-icon style="font-size: 35px; color: green;"><OfficeBuilding /></el-icon></div>
                 <div class="title"><p>Department</p></div>
             </el-card>
+
 
             <el-card v-if="user.role.permissions.includes('Reporting')"  class="card" shadow="hover">
                 <div class="icon"> <el-icon style="font-size: 35px; color: green;"><PieChart /></el-icon></div>
