@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Depertment\Depertment;
 use App\Models\User\RoleModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -24,6 +25,11 @@ class User extends Authenticatable
     public function role()
     {
         return $this->belongsTo(RoleModel::class, 'role_id', 'id');
+    }
+
+    public function department()
+    {
+        return $this->belongsTo(Depertment::class, 'department_id', 'id');
     }
 
     /**

@@ -36,7 +36,15 @@ class HandleInertiaRequests extends Middleware
                 'auth.user.role.permissions' => fn () => $request->user() && $request->user()->role
                 ? $request->user()->role->permissions->pluck('name') // Assuming permissions have a `name` attribute
                 : null,
+
+            'flash' => [
+                'success' => fn () => $request->session()->get('success'),
+                'error' => fn () => $request->session()->get('error'),
+            ],
                 
         ]);
+
     }
+
+    
 }

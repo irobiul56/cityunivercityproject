@@ -5,7 +5,11 @@ import { Link } from "@inertiajs/vue3";
 import { ref, computed } from 'vue'
 import { usePage, useForm } from '@inertiajs/vue3'
 import { ElMessage, ElDialog, ElButton } from 'element-plus';
-import { 
+
+const page = usePage();
+const user = computed(() => page.props.auth.user);
+
+import {
   Document, Menu as IconMenu, User, CaretRight
 } from '@element-plus/icons-vue';
 
@@ -60,29 +64,58 @@ const form = useForm({});
 // }
 
 const deleterequisition = (requisitionId) => {
-    if (confirm("Are you sure you want to delete this data?")) {
-        form.delete(route('requisition.destroy', requisitionId), {
-            onSuccess: (page) => {
-                requisitions.value = page.props.requisition; // Update the rooms list after deletion
-                ElMessage.success("requisition deleted successfully!");
-            },
-            onError: () => {
-                ElMessage.error("Failed to delete the requisition. Please try again.");
-            },
-        });
-    }
+  if (confirm("Are you sure you want to delete this data?")) {
+    form.delete(route('requisition.destroy', requisitionId), {
+      onSuccess: (page) => {
+        requisitions.value = page.props.requisition; // Update the rooms list after deletion
+        ElMessage.success("Data Deleted Successful");
+      },
+      onError: () => {
+        ElMessage.error("Data Deleted Unsuccessful");
+      },
+    });
+  }
 };
+
+const approveRequisition = (id) => {
+  form.post(route('requisitions.approve', id), {
+    onSuccess: (page) => {
+      const updatedRequisition = page.props.requisition.find(r => r.id === id);
+      const index = requisitions.value.findIndex(r => r.id === id);
+      if (index !== -1) {
+        requisitions.value[index] = updatedRequisition;
+      }
+      ElMessage.success(page.props.flash.success || "Requisition Approved successfully!");
+    },
+    onError: () => {
+      ElMessage.error(page.props.flash.error || "Failed to approved the requisition. Please try again.");
+    },
+  });
+};
+
+const rejectRequisition = (id) => {
+  form.post(route('requisitions.reject', id), {
+    onSuccess: (page) => {
+      const updatedRequisition = page.props.requisition.find(r => r.id === id);
+      const index = requisitions.value.findIndex(r => r.id === id);
+      if (index !== -1) {
+        requisitions.value[index] = updatedRequisition;
+      }
+      ElMessage.success(page.props.flash.success || "Requisition Reject successfully!");
+    },
+    onError: () => {
+      ElMessage.error(page.props.flash.error || "Failed to reject the requisition. Please try again.");
+    },
+  });
+};
+
+
 
 
 </script>
 
 <template>
   <FrontendLayout>
-    <div v-if="$page.props.flash?.message"
-      class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400 alert">
-      {{ $page.props.flash?.message }}
-    </div>
-
     <Head title="Requisition page"></Head>
     <div class="container mx-auto">
       <div class="relative mx-4 lg:mx-0 mb-2">
@@ -118,34 +151,32 @@ const deleterequisition = (requisitionId) => {
         <tbody>
           <tr v-for="(requisition, index) in filteredrequisition" :key="index" class="hover:bg-gray-100">
             <td class="py-2 px-4 border-b">{{ index + 1 }}</td>
-            <td class="py-2 px-4 border-b">{{ requisition.requested_by }}</td>
+            <td class="py-2 px-4 border-b">{{ requisition.users.name }}</td>
             <td class="py-2 px-4 border-b">
-                <ul v-for="(product, index) in requisition.products" :key="index">
-                  <li><el-icon><CaretRight /></el-icon> {{ product.name }}, qnt({{ product.pivot.quantity }})  </li>
-                </ul>
+              <ul v-for="(product, index) in requisition.products" :key="index">
+                <li><el-icon>
+                    <CaretRight />
+                  </el-icon> {{ product.name }}, qnt({{ product.pivot.quantity }}) </li>
+              </ul>
             </td>
             <td class="py-2 px-4 border-b">{{ requisition.description }}</td>
 
-
             <td class="py-2 px-4 border-b">{{ new Date(requisition.created_at).toLocaleDateString('en-GB') }}</td>
 
-            
-            <td class="py-2 px-4 border-b"> 
+            <td class="py-2 px-4 border-b">
               <div class="flex gap-2">
-                <el-tag v-if="requisition.status =='pending'" type="danger"><b>Pending</b></el-tag>
+                <el-tag v-if="requisition.status == 'pending'" type="danger"><b>Pending</b></el-tag>
                 <el-tag v-if="requisition.status == 'approved'" type="success"><b>Approved</b></el-tag>
                 <el-tag v-if="requisition.status == 'rejected'" type="warning"><b>Rejected</b></el-tag>
               </div>
             </td>
-            <td class="py-6 px-4 border-b flex">
+            <td class="py-2 px-4 border-b">
+              <div class="flex gap-2">
+              <el-button v-if="user.role.name == 'Administrator' && requisition.status == 'pending'" size="small" type="success" @click="approveRequisition(requisition.id)">Approve</el-button>
+              <el-button  v-if="user.role.name == 'Administrator' && requisition.status == 'pending'" type="danger" size="small" @click="rejectRequisition(requisition.id)"> Reject </el-button>
+              <el-button v-if="user.role.name !== 'Administrator' && requisition.status == 'pending'" size="small" type="danger" @click="deleterequisition(requisition.id)">Delete</el-button>
 
-              <Link @click="deleterequisition(requisition.id)">
-              <svg class="w-6 h-6 text-red-400 dark:text-white ml-5" aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M7.757 12h8.486M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-              </svg>
-              </Link>
+              </div>
             </td>
           </tr>
         </tbody>

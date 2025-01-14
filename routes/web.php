@@ -64,6 +64,10 @@ Route::middleware('auth')->group(function () {
     //requisition
     Route::resource('requisition', RequisitionController::class);
     Route::get('requisitionlist', [FronendController::class, 'requisition'])->name('requisition.list');
+    Route::post('requisitions/{id}/approve', [RequisitionController::class, 'approve'])->name('requisitions.approve');
+    Route::post('requisitions/{id}/reject', [RequisitionController::class, 'reject'])->name('requisitions.reject');
+
+
 });
 
 require __DIR__.'/auth.php';

@@ -70,6 +70,40 @@ class RequisitionController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
+
+      /**
+     * Approve the requisition.
+     */
+    public function approve($id)
+    {
+        $requisition = Requisition::findOrFail($id);
+
+        if ($requisition->status !== 'pending') {
+            return redirect()->back()->with('error', 'Requisition cannot be approved.');
+        } else {
+            $requisition->update(['status' => 'approved']);
+            return redirect()->back()->with('success', 'Requisition approved successfully!');
+        }
+    }
+
+    
+      /**
+     * Reject the requisition.
+     */
+    public function reject($id)
+    {
+        $requisition = Requisition::findOrFail($id);
+
+        if ($requisition->status !== 'pending') {
+            return back()->with('error', 'Requisition cannot be rejected.');
+        }
+
+        $requisition->update(['status' => 'rejected']);
+
+        return redirect()->back()->with('success', 'Requisition rejected successfully!');
+    }
+
+
     public function edit(string $id)
     {
         //
@@ -86,8 +120,10 @@ class RequisitionController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Requisition $requisition)
     {
-        //
+        $requisition->delete();
+
+        return redirect()->route('requisition.list')->with('message', 'Requisition deleted successfully!');
     }
 }
